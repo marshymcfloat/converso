@@ -33,7 +33,7 @@ const CompanionCard = ({
         </button>
       </div>
 
-      <div className="">
+      <div className="flex flex-col gap-4">
         <h1 className="text-2xl">{title}</h1>
         <p className="text-sm">{topic}</p>
         <p className="flex gap-2 text-xs ">
