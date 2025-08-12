@@ -2,10 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import Navlink from "./Navlink";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 const Navbar = () => {
   return (
-    <nav className="navbar shadow-2xl rounded-b-2xl bg-gradient-to-t ">
+    <nav className="navbar rounded-b-2xl bg-gradient-to-t ">
       <div className="">
         <Link href="/" className="">
           <Image
@@ -19,7 +20,14 @@ const Navbar = () => {
 
       <div className="flex gap-4 items-center justify-around">
         <Navlink />
-        <p>Sign in</p>
+        <SignedOut>
+          <SignInButton>
+            <button className="btn-signin">Sign in</button>
+          </SignInButton>
+        </SignedOut>
+        <SignedIn>
+          <UserButton afterSignOutUrl="/" />
+        </SignedIn>
       </div>
     </nav>
   );

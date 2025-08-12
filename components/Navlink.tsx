@@ -20,7 +20,7 @@ const Navlink = () => {
       {navLinks.map((link) => (
         <Link
           className={cn([
-            pathname === link.href && "text-primary font-semibold",
+            pathname === link.href && "text-purple-400 font-semibold",
           ])}
           key={link.label}
           href={link.href}
