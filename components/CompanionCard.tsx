@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 interface CompanionCardProps {
   id: string;
@@ -46,10 +47,11 @@ const CompanionCard = ({
           {duration} mins
         </p>
       </div>
-
-      <button className="btn-primary w-full justify-center">
-        Launch Companion
-      </button>
+      <Link href={`/companions/${id}`}>
+        <button className="btn-primary w-full justify-center">
+          Launch Companion
+        </button>
+      </Link>
     </div>
   );
 };

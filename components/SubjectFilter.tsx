@@ -46,7 +46,7 @@ const SubjectFilter = () => {
         value={subjectQuery}
       >
         <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Theme" />
+          <SelectValue placeholder="Subjects" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem key={"all"} value={"all"}>
