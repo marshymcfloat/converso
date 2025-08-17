@@ -17,7 +17,7 @@ export const configureAssistant = (voice: string, style: string) => {
   const voiceId =
     voices[voice as keyof typeof voices]?.[
       style as keyof (typeof voices)[keyof typeof voices]
-    ] ?? "sarah"; // Used ?? 'sarah' for a safer fallback
+    ] ?? "sarah";
 
   const vapiAssistant: CreateAssistantDTO = {
     name: "Companion",
@@ -25,7 +25,7 @@ export const configureAssistant = (voice: string, style: string) => {
       "Hello, let's start the session. Today we'll be talking about {{topic}}.",
     transcriber: {
       provider: "deepgram",
-      model: "nova-2", // ✅ FIX: Changed "nova-3" to "nova-2"
+      model: "nova-2",
       language: "en",
     },
     voice: {
@@ -33,7 +33,7 @@ export const configureAssistant = (voice: string, style: string) => {
       voiceId: voiceId,
       stability: 0.4,
       similarityBoost: 0.8,
-      speed: 0.9,
+      speed: 1,
       style: 0.5,
       useSpeakerBoost: true,
     },
@@ -57,8 +57,6 @@ export const configureAssistant = (voice: string, style: string) => {
         },
       ],
     },
-    // ✅ FIX: Removed clientMessages and serverMessages.
-    // The Vapi SDK handles standard events without needing these.
   };
 
   return vapiAssistant;

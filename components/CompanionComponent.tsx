@@ -38,7 +38,7 @@ const CompanionComponent = ({
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-
+  const [messages, setMessages] = useState<SavedMessage[]>([]);
   const lottieRef = useRef<LottieRefCurrentProps>(null);
 
   const toggleMicrophone = () => {
@@ -50,8 +50,6 @@ const CompanionComponent = ({
   const handleCall = async () => {
     setCallStatus(CallStatus.CONNECTING);
 
-    // ✅ FIX: Removed the message properties from overrides. They were conflicting
-    // with the main assistant config and are not needed for standard event handling.
     const assistantOverrides = {
       variableValues: {
         subject,
@@ -68,7 +66,6 @@ const CompanionComponent = ({
     vapi.stop();
   };
 
-  // ✅ FIX: Corrected useEffect for Lottie animation
   useEffect(() => {
     if (lottieRef.current) {
       if (isSpeaking) {
@@ -82,9 +79,11 @@ const CompanionComponent = ({
   useEffect(() => {
     const onCallStart = () => setCallStatus(CallStatus.ACTIVE);
     const onCallEnd = () => setCallStatus(CallStatus.FINISHED);
-    const onMessage = (message: any) => {
-      // You can handle custom messages here if you add them back later
-      // console.log(message);
+    const onMessage = (message: Message) => {
+      if (message.type === "transcript" && message.transcriptType === "final") {
+        const newMessage = { role: message.role, content: message.transcript };
+        setMessages((prev) => [newMessage, ...prev]);
+      }
     };
     const onSpeechStart = () => setIsSpeaking(true);
     const onSpeechEnd = () => setIsSpeaking(false);
@@ -168,7 +167,7 @@ const CompanionComponent = ({
           <button
             className="btn-mic"
             onClick={toggleMicrophone}
-            disabled={callStatus !== CallStatus.ACTIVE} // Good practice to disable when not in a call
+            disabled={callStatus !== CallStatus.ACTIVE}
           >
             <Image
               src={isMuted ? "/icons/mic-off.svg" : "/icons/mic-on.svg"}
@@ -203,7 +202,24 @@ const CompanionComponent = ({
         </div>
       </section>
       <section className="transcript">
-        <div className="transcript-message no-scrollbar">Messages</div>
+        <div className="transcript-message no-scrollbar">
+          {messages.map((message, index) => {
+            if (message.role === "assistant") {
+              return (
+                <p key={index} className="max-sm:text-sm">
+                  {name.split(" ")[0].replace("/[.,]/g,", "")}:{" "}
+                  {message.content}
+                </p>
+              );
+            } else {
+              return (
+                <p key={index} className="text-primary max-sm:text-sm">
+                  {userName}: {message.content}
+                </p>
+              );
+            }
+          })}
+        </div>
         <div className="transcript-fade"></div>
       </section>
     </section>

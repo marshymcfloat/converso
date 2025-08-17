@@ -5,7 +5,7 @@ import Link from "next/link";
 interface CompanionCardProps {
   id: string;
   subject: string;
-  title: string;
+  name: string;
   duration: number;
   topic: string;
   color: string;
@@ -15,10 +15,12 @@ const CompanionCard = ({
   duration,
   id,
   subject,
-  title,
+  name,
   topic,
   color,
 }: CompanionCardProps) => {
+  console.log(topic);
+  console.log(name);
   return (
     <div className="companion-card" style={{ backgroundColor: color }} key={id}>
       <div className="flex justify-between items-center">
@@ -35,7 +37,7 @@ const CompanionCard = ({
       </div>
 
       <div className="flex flex-col gap-4">
-        <h1 className="text-2xl">{title}</h1>
+        <h1 className="text-2xl">{name}</h1>
         <p className="text-sm">{topic}</p>
         <p className="flex gap-2 text-xs ">
           <Image
